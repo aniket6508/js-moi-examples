@@ -40,11 +40,11 @@ function App() {
 
   const getTodos = async () => {
     try {
-      const tTodos = await logicDriver.persistentState.get("todos")
-      setTodos(tTodos)
+      const tTodos = await logicDriver.persistentState.get("todos");
+      setTodos(tTodos);
       setLoading(false);
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       console.log(error);
     }
   };
@@ -72,18 +72,18 @@ function App() {
 
   const markCompleted = async (id) => {
     try {
-      setMarking(id)
+      setMarking(id);
       const ix = await logicDriver.routines.MarkTodoCompleted([id]).send({
         fuelPrice: 1,
         fuelLimit: 1000,
       });
-  
+
       await ix.wait();
-      
+
       const tTodos = [...todos];
       tTodos[id].completed = true;
       setTodos(tTodos);
-      setMarking(false)
+      setMarking(false);
     } catch (error) {
       console.log(error);
     }
@@ -96,6 +96,12 @@ function App() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  // Function to sort todos by name
+  const sortTodosByName = () => {
+    const sortedTodos = [...todos].sort((a, b) => a.name.localeCompare(b.name));
+    setTodos(sortedTodos);
   };
 
   return (
@@ -121,6 +127,7 @@ function App() {
         </form>
         {!loading ? (
           <div className="todo-container show-container">
+            <button onClick={sortTodosByName} className="text-completed">Sort by Name</button>
             {todos.map((todo, index) => (
               <div className="todo-list" key={index}>
                 {todo.name}
