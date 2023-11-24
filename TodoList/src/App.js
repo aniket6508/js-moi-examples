@@ -5,8 +5,8 @@ import { Toaster } from "react-hot-toast";
 import Loader from "./components/Loader";
 
 // ------- Update with your credentials ------------------ //
-const logicId = "Logic Id Here"
-const mnemonic = "Your Mnemonic Here"
+const logicId = "0x08000037dababf28b53c271dfe40b2f22fba43fabe531e8b959c133dde3ec30037ecaf"
+const mnemonic = "bird theory lounge increase minor clock liquid attitude bubble analyst science reunion"
 
 const logicDriver = await gettingLogicDriver(
   logicId,
