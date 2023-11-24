@@ -16,6 +16,8 @@ Variables
 */
 
 :root {
+  --pink: #EC4899;
+	--purple: #8B5CF6;
   /* dark shades of primary color*/
   --clr-primary-1: hsl(205, 86%, 17%);
   --clr-primary-2: hsl(205, 77%, 27%);
@@ -71,8 +73,12 @@ Global Styles
   box-sizing: border-box;
 }
 body {
+  background-image: url(https://imgs.search.brave.com/PICVWQ-QGS4GGU0UXyy2lmmAoiUC8aP4LFS3jXWc3Lc/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/ZnJlZWNvZGVjYW1w/Lm9yZy9uZXdzL2Nv/bnRlbnQvaW1hZ2Vz/L3NpemUvdzIwMDAv/MjAyMi8wOS9qb25h/dGFuLXBpZS0zbDNS/d1FkSFJIZy11bnNw/bGFzaC5qcGc);
+  background-repeat: no-repeat;
+  background-size: cover;
+  
   font-family: var(--ff-secondary);
-  background: var(--clr-grey-10);
+
   color: var(--clr-grey-1);
   line-height: 1.5;
   font-size: 0.875rem;
@@ -387,5 +393,16 @@ todo List
   /* border: 3px solid ; */
 }
 
+.text-completed{
+  border: none;
+	color: var(--pink);
+	font-size: 1.25rem;
+	font-weight: 700;
+	background-image: linear-gradient(to right, var(--pink), var(--purple));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	cursor: pointer;
+	transition: 0.4s;
+}
 
 

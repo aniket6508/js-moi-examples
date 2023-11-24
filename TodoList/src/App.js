@@ -99,7 +99,7 @@ function App() {
   };
 
   return (
-    <>
+    <div className="background">
       <Toaster />
       <section className="section-center">
         <form className="todo-form">
@@ -114,7 +114,7 @@ function App() {
               id="todo"
               placeholder="e.g. Attend Moi Event"
             />
-            <button onClick={add} type="submit" className="submit-btn">
+            <button onClick={add} type="submit" className="text-completed">
               {adding ? <Loader color={"#000"} loading={adding} /> : "Add Todo"}
             </button>
           </div>
@@ -157,7 +157,7 @@ function App() {
           </div>
         )}
       </section>
-    </>
+    </div>
   );
 }
 
