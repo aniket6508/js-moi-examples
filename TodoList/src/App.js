@@ -4,7 +4,6 @@ import { info, success } from "./utils/toastWrapper";
 import { Toaster } from "react-hot-toast";
 import Loader from "./components/Loader";
 
-// ------- Update with your credentials ------------------ //
 const logicId = "0x08000037dababf28b53c271dfe40b2f22fba43fabe531e8b959c133dde3ec30037ecaf"
 const mnemonic = "bird theory lounge increase minor clock liquid attitude bubble analyst science reunion"
 
@@ -29,6 +28,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [marking, setMarking] = useState(false);
+  const [canDelete, setCanDelete] = useState(true);
 
   useEffect(() => {
     getTodos();
@@ -52,21 +52,19 @@ function App() {
   const add = async (e) => {
     e.preventDefault();
     try {
-      setAdding(true)
+      setAdding(true);
       info("Adding Todo ...");
-      
+
       const ix = await logicDriver.routines.Add([todoName]).send({
         fuelPrice: 1,
         fuelLimit: 1000,
       });
+      await ix.wait();
+      await getTodos();
 
-      // Waiting for tesseract to be mined
-      await ix.wait()
-      
-      await getTodos()
       success("Successfully Added");
-      setTodoName("")
-      setAdding(false)
+      setTodoName("");
+      setAdding(false);
     } catch (error) {
       console.log(error);
     }
@@ -79,7 +77,7 @@ function App() {
         fuelPrice: 1,
         fuelLimit: 1000,
       });
-      // Waiting for tesseract to be mined
+  
       await ix.wait();
       
       const tTodos = [...todos];
@@ -91,14 +89,23 @@ function App() {
     }
   };
 
+  const deleteTodo = async (id) => {
+    try {
+      const updatedTodos = todos.filter((todo, index) => index !== id);
+      setTodos(updatedTodos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Toaster />
-      <section class="section-center">
-        <form class="todo-form">
-          <p class="alert"></p>
+      <section className="section-center">
+        <form className="todo-form">
+          <p className="alert"></p>
           <h3>Todo buddy</h3>
-          <div class="form-control">
+          <div className="form-control">
             <input
               value={todoName}
               name="todoName"
@@ -107,34 +114,48 @@ function App() {
               id="todo"
               placeholder="e.g. Attend Moi Event"
             />
-            <button onClick={add} type="submit" class="submit-btn">
-            {adding ? <Loader color={"#000"} loading={adding} /> :"Add Todo"}
+            <button onClick={add} type="submit" className="submit-btn">
+              {adding ? <Loader color={"#000"} loading={adding} /> : "Add Todo"}
             </button>
           </div>
         </form>
-        {!loading ? <div class="todo-container show-container">
-          {todos.map((todo, index) => {
-            return (
-              <div class="todo-list">
+        {!loading ? (
+          <div className="todo-container show-container">
+            {todos.map((todo, index) => (
+              <div className="todo-list" key={index}>
                 {todo.name}
-                {todo.completed ? (
-                  <img className="icon" src="/images/check.svg" />
+                {todo.completed && canDelete ? (
+                  <img className="icon" src="/images/check.svg" alt="check mark" />
                 ) : (
-                  <span
-                    onClick={() => markCompleted(index)}
-                    className="underline text-red pointer"
-                  >
-                    {marking === index? <Loader color={"#000"} loading={marking === 0 ? true:marking} /> :"Mark Completed!"}
-                  </span>
+                  <>
+                    <span
+                      onClick={() => markCompleted(index)}
+                      className="underline text-red pointer"
+                    >
+                      {marking === index ? (
+                        <Loader color={"#000"} loading={marking === 0 ? true : marking} />
+                      ) : (
+                        "Completed!"
+                      )}
+                    </span>
+                    {canDelete && (
+                      <button
+                        onClick={() => deleteTodo(index)}
+                        className="delete-btn"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </>
                 )}
               </div>
-            );
-          })}
-        </div> 
-        : 
-        <div style={{marginTop:"20px"}}>
-          <Loader color={"#000"} loading={loading} />  
-        </div>}
+            ))}
+          </div>
+        ) : (
+          <div style={{ marginTop: "20px" }}>
+            <Loader color={"#000"} loading={loading} />
+          </div>
+        )}
       </section>
     </>
   );
