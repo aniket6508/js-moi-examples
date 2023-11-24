@@ -98,7 +98,6 @@ function App() {
     }
   };
 
-  // Function to sort todos by name
   const sortTodosByName = () => {
     const sortedTodos = [...todos].sort((a, b) => a.name.localeCompare(b.name));
     setTodos(sortedTodos);
